@@ -6,7 +6,7 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 18:20:47 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/14 17:58:06 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:47:36 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,7 @@ int					valid_arguments(int argc, char **argv);
 int					init_data(int argc, char **argv, t_data *data);
 long int			ft_long_atoi(const char *str);
 
+
+
+int	ft_error(char *str);
 #endif
