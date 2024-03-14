@@ -8,7 +8,9 @@ SRCS_DIR 	= src/
 OBJS_DIR 	= obj/
 
 FILES = \
-	main 
+	main \
+	init \
+	ft_long_atoi \
 
 OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))
 

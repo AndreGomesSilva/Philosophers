@@ -1,36 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_long_atoi.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/10 18:17:40 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/14 18:41:43 by angomes-         ###   ########.fr       */
+/*   Created: 2024/03/14 17:26:19 by angomes-          #+#    #+#             */
+/*   Updated: 2024/03/14 17:38:17 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-// void *routine(){
-//   printf("teste from threads\n");
-// }
-
-int main(int argc, char **argv)
+long int	ft_long_atoi(const char *str)
 {
-  t_data *data;
+	long long	result;
+	int			i;
+	int			sign;
 
-  data = (t_data *)malloc(sizeof(t_data));
-  if (data == NULL)
-    return (1);
-  if (valid_arguments(argc, argv) && init_data(argc, argv, data))
-  {
-    printf("Its ok");
-  }
-  else
-  {
-    write(2, "Error: Invalid arguments\n", 25);
-    return (1);
-  }
-  return (0);
+	i = 0;
+	result = 0;
+	sign = 1;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (result * sign);
 }
