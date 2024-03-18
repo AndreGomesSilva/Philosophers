@@ -3,14 +3,23 @@ CC = cc -g3
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 INC = -Iinclude/
-LEAK = valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+LEAK = valgrind --leak-check=full --show-leak-kinds=all 
 SRCS_DIR 	= src/
+UTILS_DIR 	= utils/
+PHILO_DIR 	= philo/
+HANDLE_FREE_DIR = handle_free/
 OBJS_DIR 	= obj/
+
+
+ARGS = 5 800 200 200 7
 
 FILES = \
 	main \
 	init \
-	ft_long_atoi \
+	$(PHILO_DIR)philo \
+	$(HANDLE_FREE_DIR)free_data \
+	$(UTILS_DIR)ft_long_atoi $(UTILS_DIR)ft_usleep\
+	$(UTILS_DIR)get_time \
 
 OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))
 
@@ -24,6 +33,15 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR)
 
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
+	@mkdir -p $(OBJS_DIR)$(UTILS_DIR)
+	@mkdir -p $(OBJS_DIR)$(PHILO_DIR)
+	@mkdir -p $(OBJS_DIR)$(HANDLE_FREE_DIR)
+
+play: re
+	./$(NAME) $(ARGS)	
+
+play_leak: re
+	$(LEAK) ./$(NAME) $(ARGS)
 
 clean:
 	$(RM) -r $(OBJS_DIR) 

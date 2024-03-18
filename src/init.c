@@ -6,7 +6,7 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 17:17:07 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/14 17:57:30 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/18 19:21:41 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,21 @@ int	valid_arguments(int argc, char **argv)
 	return (TRUE);
 }
 
+int init_philo(t_data *data)
+{
+  t_philo *philo;
+
+  philo = (t_philo *)malloc(sizeof(t_philo));
+  if (data == NULL)
+    return (1);
+  while (data->nb_philo)
+  {
+    add_philo(philo);
+    data->nb_philo--;
+  }
+  return (0); 
+}
+
 int	init_data(int argc, char **argv, t_data *data)
 {
 	data->nb_philo = (int) ft_long_atoi(argv[1]);
@@ -43,3 +58,4 @@ int	init_data(int argc, char **argv, t_data *data)
 		return (FALSE);
 	return (TRUE);
 }
+
