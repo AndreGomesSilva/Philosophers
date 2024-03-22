@@ -6,17 +6,16 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:27:08 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/18 16:42:33 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:08:44 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo.h"
 
-int ft_error(char *str, t_data *data)
+int ft_error(char *str, t_data *data, t_philo *philo)
 {
   printf("%s\n", str);
-  if (data)
-    free_data(data);
+  handle_free(data, philo);
   return (1);
 }
 

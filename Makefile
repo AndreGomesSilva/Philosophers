@@ -1,9 +1,9 @@
 NAME =	philo 
 CC = cc -g3
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pthread
 RM = rm -f
 INC = -Iinclude/
-LEAK = valgrind --leak-check=full --show-leak-kinds=all 
+LEAK = valgrind --leak-check=full --show-leak-kinds=all --tool=helgrind
 SRCS_DIR 	= src/
 UTILS_DIR 	= utils/
 PHILO_DIR 	= philo/
@@ -18,7 +18,8 @@ FILES = \
 	init \
 	$(PHILO_DIR)philo \
 	$(HANDLE_FREE_DIR)free_data \
-	$(UTILS_DIR)ft_long_atoi $(UTILS_DIR)ft_usleep\
+	$(UTILS_DIR)ft_long_atoi $(UTILS_DIR)ft_usleep \
+	$(UTILS_DIR)ft_error $(UTILS_DIR)validate_args \
 	$(UTILS_DIR)get_time \
 
 OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))

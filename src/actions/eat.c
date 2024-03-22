@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_time.c                                         :+:      :+:    :+:   */
+/*   eat.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 16:16:09 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/21 18:23:20 by angomes-         ###   ########.fr       */
+/*   Created: 2024/03/21 18:02:21 by angomes-          #+#    #+#             */
+/*   Updated: 2024/03/21 18:02:35 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo.h"
 
-unsigned int	get_time(void)
+int	eating(t_philo *philo)
 {
-	struct timeval	tv;
-	
-	if (gettimeofday(&tv, NULL))
-		return (ft_error("gettimeofday error",NULL, NULL));
-	return ((tv.tv_sec * (unsigned int)1000) + (tv.tv_usec / 1000));
+  if (printf("Philo %d is eating", philo->id) == -1)
+    return (-1);
+  if (ft_usleep(philo->data->time_to_eat) == -1)
+    return (-1);
+  return (0);
 }

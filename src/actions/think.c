@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_time.c                                         :+:      :+:    :+:   */
+/*   think.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 16:16:09 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/21 18:23:20 by angomes-         ###   ########.fr       */
+/*   Created: 2024/03/21 17:41:22 by angomes-          #+#    #+#             */
+/*   Updated: 2024/03/21 18:02:48 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo.h"
 
-unsigned int	get_time(void)
+int thinking(t_philo *philo)
 {
-	struct timeval	tv;
-	
-	if (gettimeofday(&tv, NULL))
-		return (ft_error("gettimeofday error",NULL, NULL));
-	return ((tv.tv_sec * (unsigned int)1000) + (tv.tv_usec / 1000));
+  if (printf("Philo %d is thinking", philo->id) == -1)
+    return (-1);
+  return (0);
 }

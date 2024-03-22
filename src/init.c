@@ -6,39 +6,24 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 17:17:07 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/18 19:21:41 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/21 21:41:02 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-int	valid_arguments(int argc, char **argv)
+void create_philo(t_data *data, t_philo *philo)
 {
-	if (argc < 5 || argc > 6)
-		return (FALSE);
-	if (ft_long_atoi(argv[1]) < MIN_INT || ft_long_atoi(argv[1]) > MAX_INT
-		|| ft_long_atoi(argv[2]) < MIN_INT || ft_long_atoi(argv[2]) > MAX_INT
-		|| ft_long_atoi(argv[3]) < MIN_INT || ft_long_atoi(argv[3]) > MAX_INT
-		|| ft_long_atoi(argv[4]) < MIN_INT || ft_long_atoi(argv[4]) > MAX_INT
-		|| (argc == 6 && (ft_long_atoi(argv[5]) < MIN_INT
-				|| ft_long_atoi(argv[5]) > MAX_INT)))
-		return (FALSE);
-	return (TRUE);
-}
+  t_philo *tmp_philo;
+  int number_philo;
 
-int init_philo(t_data *data)
-{
-  t_philo *philo;
-
-  philo = (t_philo *)malloc(sizeof(t_philo));
-  if (data == NULL)
-    return (1);
-  while (data->nb_philo)
+  tmp_philo = philo;
+  number_philo = data->nb_philo;
+  while (--number_philo)
   {
-    add_philo(philo);
-    data->nb_philo--;
+    add_philo(tmp_philo);
+    tmp_philo = tmp_philo->next;
   }
-  return (0); 
 }
 
 int	init_data(int argc, char **argv, t_data *data)
@@ -59,3 +44,53 @@ int	init_data(int argc, char **argv, t_data *data)
 	return (TRUE);
 }
 
+void create_forks(t_data *data)
+{
+  int i;
+  t_fork *fork;
+  t_fork *tmp;
+
+  i = 0;
+  fork = malloc(sizeof(t_fork));
+  data->forks = fork;
+  while (i < data->nb_philo)
+  {
+    tmp = malloc(sizeof(t_fork));
+    fork->next = tmp;
+    fork = fork->next;
+    i++;
+  }
+}
+
+void set_forks(t_data *data, t_philo *philo)
+{
+  int i;
+  t_data *tmp_data;
+
+  i = 0;
+  tmp_data = data;
+  while (i < data->nb_philo && philo != NULL)
+  {
+    philo->left_fork = tmp_data->forks->fork; 
+    if (i == data->nb_philo - 1)
+      philo->right_fork = data->forks->fork;
+    else
+      philo->right_fork = tmp_data->forks->next->fork;
+    if (tmp_data->forks->next == NULL)
+      tmp_data->forks = tmp_data->forks->next;
+    philo = philo->next;
+    i++;
+  }
+}
+
+int handle_init(int argc, char **argv, t_data *data, t_philo *philo)
+{
+  if ((!data || !philo))
+    return (FALSE);
+  if (init_data(argc, argv, data) == FALSE)
+    return (FALSE);
+  create_forks(data);
+  create_philo(data, philo);
+  set_forks(data, philo);
+  return (TRUE);
+}

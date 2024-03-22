@@ -6,35 +6,55 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 18:17:40 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/18 20:34:11 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/21 22:15:14 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+void	print_philo(t_philo *philo)
+{
+	t_philo	*tmp;
+
+	tmp = philo;
+	while (tmp)
+	{
+		printf("%d \n", tmp->id);
+		tmp = tmp->next;
+	}
+}
 
 void	*routine(void *param)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)param;
-	pthread_mutex_lock(&philo->fork);
-	printf("%ld %d has taken a fork\n", (long)get_time(), philo->id);
-	pthread_mutex_unlock(&philo->fork);
+	printf("%d has taken a fork %u \n", philo->id, get_time());
 	return (NULL);
 }
 
 void	start_diner(t_data *data, t_philo *philo)
 {
+	t_philo	*tmp_philo;
+	int		number_philo;
+
 	philo->data = data;
-	pthread_mutex_init(&philo->fork, NULL);
-	while (data->nb_philo && philo != NULL)
+	tmp_philo = philo;
+	number_philo = data->nb_philo;
+	while (number_philo && tmp_philo != NULL)
 	{
-		pthread_create(&philo->tr, NULL, &routine, philo);
-		philo = philo->next;
-		data->nb_philo--;
+		pthread_create(&philo->tr, NULL, &routine, tmp_philo);
+		tmp_philo = tmp_philo->next;
+		number_philo--;
 	}
-	pthread_join(philo->tr, NULL);
-	pthread_mutex_destroy(&philo->fork);
+	number_philo = data->nb_philo;
+	tmp_philo = philo;
+	while (number_philo && tmp_philo != NULL)
+	{
+		pthread_join(philo->tr, NULL);
+		tmp_philo = tmp_philo->next;
+		number_philo--;
+	}
 }
 
 int	main(int argc, char **argv)
@@ -46,9 +66,9 @@ int	main(int argc, char **argv)
 	data = (t_data *)malloc(sizeof(t_data));
 	if (data == NULL)
 		return (1);
-	if (valid_arguments(argc, argv) && init_data(argc, argv, data))
+	if (valid_arguments(argc, argv) && handle_init(argc, argv, data, philo))
 	{
-    add_philo(philo);
+		print_philo(philo);
 		start_diner(data, philo);
 		printf("Its ok");
 	}
@@ -57,5 +77,6 @@ int	main(int argc, char **argv)
 		write(2, "Error: Invalid arguments\n", 25);
 		return (1);
 	}
+  handle_free(data, philo);  
 	return (0);
 }
