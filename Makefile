@@ -3,7 +3,7 @@ CC = cc -g3
 CFLAGS = -Wall -Wextra -Werror -pthread
 RM = rm -f
 INC = -Iinclude/
-LEAK = valgrind --leak-check=full --show-leak-kinds=all --tool=helgrind
+LEAK = valgrind --tool=helgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
 SRCS_DIR 	= src/
 UTILS_DIR 	= utils/
 PHILO_DIR 	= philo/
@@ -41,7 +41,7 @@ $(OBJS_DIR):
 play: re
 	./$(NAME) $(ARGS)	
 
-play_leak: re
+val: re
 	$(LEAK) ./$(NAME) $(ARGS)
 
 clean:

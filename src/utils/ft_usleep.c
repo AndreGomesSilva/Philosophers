@@ -6,7 +6,7 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:18:04 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/18 16:18:42 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/23 18:12:51 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_usleep(useconds_t time)
 {
-	u_int64_t	start;
+	unsigned long	start;
 	start = get_time();
 	while ((get_time() - start) < time)
 		usleep(time / 10);
