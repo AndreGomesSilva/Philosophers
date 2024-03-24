@@ -6,7 +6,7 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 18:20:47 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/21 21:30:00 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/24 20:10:12 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,15 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
+#include <string.h>
 
 typedef struct s_philo
 {
 	pthread_t		tr;
 	int				id;
-	int				right;
-	int				left;
-	int				eating;
-	int				sleeping;
-	int				thinking;
 	int				dead;
+  int				eat_count;
+  int       last_meal;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 	struct s_philo	*next;
@@ -53,6 +51,7 @@ typedef struct s_data
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
+  unsigned int 	start_time;
 	struct s_fork	*forks;
 	int				nb_meals;
 }					t_data;
@@ -75,6 +74,8 @@ int					ft_error(char *str, t_data *data, t_philo *philo);
 int					handle_init(int argc, char **argv, t_data *data,
 						t_philo *philo);
 int					thinking(t_philo *philo);
+int	eating(t_philo *philo);
+int	sleeping(t_philo *philo);
 
 //handle_free
 void				handle_free(t_data *data, t_philo *philo);
@@ -83,7 +84,7 @@ void				handle_free(t_data *data, t_philo *philo);
 void				create_philo(t_data *data, t_philo *philo);
 
 //philo
-t_philo				*add_philo(t_philo *philo);
+t_philo				*add_philo(t_philo *philo, t_data *data);
 
 int					valid_arguments(int argc, char **argv);
 int					init_data(int argc, char **argv, t_data *data);

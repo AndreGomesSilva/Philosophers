@@ -8,6 +8,7 @@ SRCS_DIR 	= src/
 UTILS_DIR 	= utils/
 PHILO_DIR 	= philo/
 HANDLE_FREE_DIR = handle_free/
+ACTIONS_DIR = actions/
 OBJS_DIR 	= obj/
 
 
@@ -18,6 +19,7 @@ FILES = \
 	init \
 	$(PHILO_DIR)philo \
 	$(HANDLE_FREE_DIR)free_data \
+	$(ACTIONS_DIR)eat $(ACTIONS_DIR)sleep $(ACTIONS_DIR)think \
 	$(UTILS_DIR)ft_long_atoi $(UTILS_DIR)ft_usleep \
 	$(UTILS_DIR)ft_error $(UTILS_DIR)validate_args \
 	$(UTILS_DIR)get_time \
@@ -37,6 +39,7 @@ $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)$(UTILS_DIR)
 	@mkdir -p $(OBJS_DIR)$(PHILO_DIR)
 	@mkdir -p $(OBJS_DIR)$(HANDLE_FREE_DIR)
+	@mkdir -p $(OBJS_DIR)$(ACTIONS_DIR)
 
 play: re
 	./$(NAME) $(ARGS)	

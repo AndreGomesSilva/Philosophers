@@ -6,7 +6,7 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:39:33 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/23 19:32:47 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/24 19:53:08 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_philo	*get_last_philo(t_philo *philo)
 	return (last);
 }
 
-t_philo	*add_philo(t_philo *philo)
+t_philo	*add_philo(t_philo *philo, t_data *data)
 {
 	t_philo	*new_philo;
 	t_philo	*last;
@@ -37,9 +37,15 @@ t_philo	*add_philo(t_philo *philo)
     write(2, "Error: malloc failed\n", 22);
 		return (NULL);
   }
-	new_philo->next = NULL;
+  memset(new_philo, 0, sizeof(t_philo));
+  new_philo->data = data;
 	last = get_last_philo(philo);
-	last->next = new_philo;
-	new_philo->id = last->id + 1;
+  if (last == NULL)
+    new_philo->id = 1;
+  else
+  {
+  	last->next = new_philo;
+  	new_philo->id = last->id + 1;
+  }
 	return (philo);
 }
