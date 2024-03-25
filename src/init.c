@@ -6,7 +6,7 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 17:17:07 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/24 19:52:29 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:34:56 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@ void	create_philo(t_data *data, t_philo *philo)
 	int		number_philo;
 
 	tmp_philo = philo;
+  philo->id = 1;
   tmp_philo->data = data;
 	number_philo = data->nb_philo;
 	while (--number_philo && tmp_philo != NULL)
 	{
-		add_philo(tmp_philo, data);
+		if (add_philo(tmp_philo, data) == NULL)
+      ft_error("Error: add_philo failed\n", data, philo);
 		tmp_philo = tmp_philo->next;
 	}
 }

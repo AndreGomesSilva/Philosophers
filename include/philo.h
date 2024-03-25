@@ -6,7 +6,7 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 18:20:47 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/24 20:10:12 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/25 18:35:05 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # define FALSE 0
 
 # include <pthread.h>
-# include <semaphore.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
@@ -59,9 +58,9 @@ typedef struct s_data
 typedef struct s_supervisor
 {
 	int				number;
-	t_data			*data;
-	t_philo			*philo;
-	pthread_t		*tr;
+  int       see_dead;
+  struct s_philo	*philos;
+	pthread_t		tr;
 }					t_supervisor;
 
 //utils

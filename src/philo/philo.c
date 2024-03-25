@@ -6,7 +6,7 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 17:39:33 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/24 19:53:08 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/25 17:34:16 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_philo	*add_philo(t_philo *philo, t_data *data)
   new_philo->data = data;
 	last = get_last_philo(philo);
   if (last == NULL)
-    new_philo->id = 1;
+    return (NULL);
   else
   {
   	last->next = new_philo;
