@@ -6,12 +6,11 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 18:17:40 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/26 21:36:11 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/27 19:28:57 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-#include <pthread.h>
 
 // void	print_philo(t_philo *philo)
 // {
@@ -38,67 +37,66 @@ int	stop_actions(t_philo *philo)
 	return (result);
 }
 
+void	even_sit(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	pthread_mutex_lock(philo->right_fork);
+	if (!stop_actions(philo))
+		printf("Time: %u Philo: %d has taken forks\n",
+				get_time(philo),
+				philo->id);
+	if (!stop_actions(philo))
+    eating(philo);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+}
+
+void	odd_sit(t_philo *philo)
+{
+	pthread_mutex_lock(philo->right_fork);
+	pthread_mutex_lock(philo->left_fork);
+	if (!stop_actions(philo))
+		printf("Time: %u Philo: %d has taken forks\n",
+				get_time(philo),
+				philo->id);
+	if (!stop_actions(philo))
+    eating(philo);
+	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
+}
+
 void	*routine(void *param)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)param;
-	while (!stop_actions(philo) && (!philo->data->nb_meals || philo->eat_count < philo->data->nb_meals))
+	while (!stop_actions(philo) && (!philo->data->nb_meals
+			|| !philo->satisfied))
 	{
 		if (philo->id % 2 == 0 && !stop_actions(philo))
-		{
-			pthread_mutex_lock(philo->left_fork);
-			if (!stop_actions(philo))
-				printf("Time: %u Philo: %d has taken a left fork\n",
-						get_time(philo),
-						philo->id);
-			pthread_mutex_lock(philo->right_fork);
-			if (!stop_actions(philo))
-				printf("Time: %u Philo: %d has taken a right fork\n",
-						get_time(philo),
-						philo->id);
-			if (!stop_actions(philo))
-				eating(philo);
-			pthread_mutex_unlock(philo->left_fork);
-			if (!stop_actions(philo))
-				printf("Time: %u Philo: %d has put a left fork\n",
-						get_time(philo),
-						philo->id);
-			pthread_mutex_unlock(philo->right_fork);
-			if (!stop_actions(philo))
-				printf("Time: %u Philo: %d has put a right fork\n",
-						get_time(philo),
-						philo->id);
-		}
-		else if (!stop_actions(philo))
-		{
-			pthread_mutex_lock(philo->right_fork);
-			if (!stop_actions(philo))
-				printf("Time: %u Philo: %d has taken a right fork\n",
-						get_time(philo),
-						philo->id);
-			pthread_mutex_lock(philo->left_fork);
-			if (!stop_actions(philo))
-			  printf("Time: %u Philo: %d has taken a left fork\n",
-					get_time(philo),
-					philo->id);
-			if (!stop_actions(philo))
-				eating(philo);
-			pthread_mutex_unlock(philo->right_fork);
-			if (!stop_actions(philo))
-			  printf("Time: %u Philo: %d has put a right fork\n", get_time(philo),
-					philo->id);
-			pthread_mutex_unlock(philo->left_fork);
-			if (!stop_actions(philo))
-			  printf("Time: %u Philo: %d has put a left fork\n", get_time(philo),
-					philo->id);
-		}
+			even_sit(philo);
+		else if (philo->id % 2 == 1 && !stop_actions(philo))
+			odd_sit(philo);
 		if (!stop_actions(philo))
 			sleeping(philo);
 		if (!stop_actions(philo))
 			thinking(philo);
 	}
 	return (NULL);
+}
+
+int  all_philo_satisfied(t_philo *philo)
+{
+  t_philo *tmp_philo;
+
+  tmp_philo = philo;
+  while (tmp_philo)
+  {
+    if (!tmp_philo->satisfied)
+      return (FALSE);
+    tmp_philo = tmp_philo->next;
+  }
+  return (TRUE);
 }
 
 void	*monitoring(void *param)
@@ -112,16 +110,26 @@ void	*monitoring(void *param)
 	{
 		if (philo == NULL)
 			philo = supervisor->philos;
+    if (philo->data->nb_meals > 0 && philo->eat_count == philo->data->nb_meals)
+      philo->satisfied = TRUE;
+    if (all_philo_satisfied(philo))
+    {
+      pthread_mutex_lock(&supervisor->print);
+      supervisor->break_execution = TRUE;
+			pthread_mutex_unlock(&supervisor->print);
+      break ;
+    }
 		if (philo->dead || is_dead(philo))
 		{
 			pthread_mutex_lock(&supervisor->print);
 			supervisor->break_execution = TRUE;
 			printf("Timer: %u Philo %d is dead\n", get_time(philo), philo->id);
 			pthread_mutex_unlock(&supervisor->print);
-			return (NULL);
+			break ;
 		}
 		philo = philo->next;
 	}
+  return (NULL);
 }
 
 void	start_diner(t_data *data, t_supervisor *supervisor)

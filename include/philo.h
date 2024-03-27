@@ -6,7 +6,7 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 18:20:47 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/26 21:05:50 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/27 18:16:57 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_philo
 	int					id;
 	int					dead;
 	int					eat_count;
+	int					satisfied;
 	int					last_meal;
 	pthread_mutex_t		*right_fork;
 	pthread_mutex_t		*left_fork;
@@ -75,7 +76,7 @@ int						eating(t_philo *philo);
 int						sleeping(t_philo *philo);
 int						is_dead(t_philo *philo);
 
-int						stop_actions(t_philo *philo); //TODO 
+int	stop_actions(t_philo *philo); //TODO
 
 //handle_free
 void					handle_free(t_data *data, t_supervisor *supervisor);
