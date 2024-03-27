@@ -6,9 +6,11 @@ INC = -Iinclude/
 LEAK = valgrind --tool=helgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
 SRCS_DIR 	= src/
 UTILS_DIR 	= utils/
-PHILO_DIR 	= philo/
+DINNER_DIR 	= dinner/
+TIMER_DIR 	= timer/
 HANDLE_FREE_DIR = handle_free/
 ACTIONS_DIR = actions/
+INIT_DIR 	= init/
 OBJS_DIR 	= obj/
 
 
@@ -16,13 +18,14 @@ ARGS = 5 800 200 200 7
 
 FILES = \
 	main \
-	init \
-	$(PHILO_DIR)philo \
+	$(DINNER_DIR)philo $(DINNER_DIR)data \
+	$(DINNER_DIR)forks $(DINNER_DIR)supervisor \
 	$(HANDLE_FREE_DIR)free_data \
-	$(ACTIONS_DIR)eat $(ACTIONS_DIR)sleep $(ACTIONS_DIR)think \
-	$(UTILS_DIR)ft_long_atoi $(UTILS_DIR)ft_usleep \
-	$(UTILS_DIR)ft_error $(UTILS_DIR)validate_args \
-	$(UTILS_DIR)get_time \
+	$(ACTIONS_DIR)eat $(ACTIONS_DIR)sleep \
+	$(ACTIONS_DIR)think $(ACTIONS_DIR)die \
+	$(UTILS_DIR)ft_long_atoi \
+	$(INIT_DIR)init $(INIT_DIR)validate_args \
+	$(TIMER_DIR)get_time $(TIMER_DIR)ft_usleep \
 
 OBJS = $(addprefix $(OBJS_DIR), $(addsuffix .o, $(FILES)))
 
@@ -37,9 +40,11 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJS_DIR)
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 	@mkdir -p $(OBJS_DIR)$(UTILS_DIR)
-	@mkdir -p $(OBJS_DIR)$(PHILO_DIR)
+	@mkdir -p $(OBJS_DIR)$(DINNER_DIR)
 	@mkdir -p $(OBJS_DIR)$(HANDLE_FREE_DIR)
 	@mkdir -p $(OBJS_DIR)$(ACTIONS_DIR)
+	@mkdir -p $(OBJS_DIR)$(TIMER_DIR)
+	@mkdir -p $(OBJS_DIR)$(INIT_DIR)
 
 play: re
 	./$(NAME) $(ARGS)	

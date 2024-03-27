@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   ft_usleep.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 16:27:08 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/25 17:35:30 by angomes-         ###   ########.fr       */
+/*   Created: 2024/03/18 16:18:04 by angomes-          #+#    #+#             */
+/*   Updated: 2024/03/26 17:07:01 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo.h"
 
-int ft_error(char *str, t_data *data, t_philo *philo)
+int	ft_usleep(useconds_t time)
 {
-  printf("%s\n", str);
-  handle_free(data, philo);
-  exit (-1);
+	unsigned long	start;
+	start = get_time_ms();
+	while ((get_time_ms() - start) < time)
+		usleep(time / 10);
+	return(0);
 }
 

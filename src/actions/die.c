@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_usleep.c                                        :+:      :+:    :+:   */
+/*   die.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 16:18:04 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/23 18:12:51 by angomes-         ###   ########.fr       */
+/*   Created: 2024/03/26 17:18:39 by angomes-          #+#    #+#             */
+/*   Updated: 2024/03/26 20:40:01 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/philo.h"
 
-int	ft_usleep(useconds_t time)
+int	is_dead(t_philo *philo)
 {
-	unsigned long	start;
-	start = get_time();
-	while ((get_time() - start) < time)
-		usleep(time / 10);
-	return(0);
-}
+	int	time;
 
+	time = get_time(philo);
+	if (time - philo->last_meal >= philo->data->time_to_die)
+	{
+		philo->dead = 1;
+		return (TRUE);
+	}
+	return (FALSE);
+}

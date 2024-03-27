@@ -6,7 +6,7 @@
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 16:38:48 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/25 17:39:22 by angomes-         ###   ########.fr       */
+/*   Updated: 2024/03/26 20:19:54 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ void	free_forks(t_fork *fork)
   }
 }
 
+void free_supervisor(t_supervisor *supervisor)
+{
+  pthread_mutex_destroy(&supervisor->print);
+  free(supervisor);
+}
+
 void	free_philo(t_philo *philo)
 {
   t_philo *tmp;
@@ -53,8 +59,12 @@ void	free_data(t_data *data)
 	free(data);
 }
 
-void	handle_free(t_data *data, t_philo *philo)
+void	handle_free(t_data *data, t_supervisor *supervisor)
 {
+  t_philo *philo;
+
+  philo = supervisor->philos;
+  free_supervisor(supervisor);
 	free_data(data);
 	free_philo(philo);
 }

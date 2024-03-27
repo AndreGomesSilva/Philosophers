@@ -1,50 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angomes- <angomes-@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/14 17:17:07 by angomes-          #+#    #+#             */
-/*   Updated: 2024/03/25 17:34:56 by angomes-         ###   ########.fr       */
+/*   Created: 2024/03/26 15:22:08 by angomes-          #+#    #+#             */
+/*   Updated: 2024/03/26 15:25:10 by angomes-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
-
-void	create_philo(t_data *data, t_philo *philo)
-{
-	t_philo	*tmp_philo;
-	int		number_philo;
-
-	tmp_philo = philo;
-  philo->id = 1;
-  tmp_philo->data = data;
-	number_philo = data->nb_philo;
-	while (--number_philo && tmp_philo != NULL)
-	{
-		if (add_philo(tmp_philo, data) == NULL)
-      ft_error("Error: add_philo failed\n", data, philo);
-		tmp_philo = tmp_philo->next;
-	}
-}
-
-int	init_data(int argc, char **argv, t_data *data)
-{
-	data->nb_philo = (int)ft_long_atoi(argv[1]);
-	data->time_to_die = (int)ft_long_atoi(argv[2]);
-	data->time_to_eat = (int)ft_long_atoi(argv[3]);
-	data->time_to_sleep = (int)ft_long_atoi(argv[4]);
-	if (argc == 6)
-		data->nb_meals = (int)ft_long_atoi(argv[5]);
-	else
-		data->nb_meals = 0;
-	if (data->nb_philo < 1 || data->nb_philo > 200 || data->time_to_die < 0
-		|| data->time_to_eat < 0 || data->time_to_sleep < 0
-		|| data->nb_meals < 0)
-		return (FALSE);
-	return (TRUE);
-}
+#include "../../include/philo.h"
 
 void	create_forks(t_data *data)
 {
@@ -98,14 +64,3 @@ void	set_forks(t_data *data, t_philo *philo)
 	}
 }
 
-int	handle_init(int argc, char **argv, t_data *data, t_philo *philo)
-{
-	if (!data)
-		return (FALSE);
-	if (init_data(argc, argv, data) == FALSE)
-		return (FALSE);
-	create_forks(data);
-	create_philo(data, philo);
-	set_forks(data, philo);
-	return (TRUE);
-}
